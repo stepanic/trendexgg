@@ -1,0 +1,32 @@
+{
+  "name": "lucky-draw",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=21.0.0"
+  },
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "select-winner": "bun src/scripts/selectWinner.ts data/modric_top_holders_oct_19.json 3",
+    "verify-winner": "bun src/scripts/verifyWinner.ts data/modric_top_holders_oct_19.json 3"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@coral-xyz/anchor": "^0.32.1",
+    "@orao-network/solana-vrf": "^0.7.0",
+    "bs58": "^6.0.0",
+    "dotenv": "^17.2.3",
+    "minimist": "^1.2.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0",
+    "tsx": "^4.0.0"
+  }
+}
