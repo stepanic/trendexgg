@@ -1,10 +1,10 @@
 import { AnchorProvider } from "@coral-xyz/anchor";
-import { Connection, clusterApiUrl } from "@solana/web3.js";
 import { Orao } from "@orao-network/solana-vrf";
-import "dotenv/config";
+import { Connection } from "@solana/web3.js";
 import bs58 from "bs58";
+import "dotenv/config";
+import { VRF_CONFIG } from "../config/constants";
 import { VRFResult, VerifyResult } from "../types";
-import { RPC_ENDPOINTS, VRF_CONFIG } from "../config/constants";
 
 const provider = AnchorProvider.env();
 const vrf = new Orao(provider);
@@ -13,6 +13,7 @@ export const generateRandomness = async (): Promise<VRFResult> => {
   try {
     const walletAddress = provider.wallet.publicKey.toBase58();
     console.log("Using wallet:", walletAddress);
+    console.log("Useing provider:", provider.connection.rpcEndpoint);
 
     const requestBuilder = await vrf.request();
     const [seed, tx] = await requestBuilder.rpc();
@@ -46,7 +47,7 @@ export const generateRandomness = async (): Promise<VRFResult> => {
 
 export const verifyRandomness = async (
   seedBase58: string | Buffer,
-  rpcUrl: string = RPC_ENDPOINTS.MAINNET
+  rpcUrl: string
 ): Promise<VerifyResult> => {
   try {
     const seed =

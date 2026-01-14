@@ -1,0 +1,55 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Select Winner (Custom)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "src/scripts/selectWinner.ts",
+        "${input:dataFilePath}",
+        "${input:numberOfWinners}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    },
+    {
+      "name": "Verify Winner (Custom)",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "bun",
+      "runtimeArgs": [
+        "src/scripts/verifyWinner.ts",
+        "${input:dataFilePath}",
+        "${input:numberOfWinners}",
+        "${input:vrfSeed}"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen",
+      "skipFiles": ["<node_internals>/**"]
+    }
+  ],
+  "inputs": [
+    {
+      "id": "dataFilePath",
+      "type": "promptString",
+      "description": "Path to the data file",
+      "default": "data/modric_top_holders_jan_14_2026.json"
+    },
+    {
+      "id": "numberOfWinners",
+      "type": "promptString",
+      "description": "Number of winners to select",
+      "default": "1"
+    },
+    {
+      "id": "vrfSeed",
+      "type": "promptString",
+      "description": "VRF seed to verify"
+    }
+  ]
+}

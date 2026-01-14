@@ -11,14 +11,16 @@ const seed: string = process.argv[4];
 const main = async (): Promise<void> => {
   try {
     if (!dataFilePath || !process.argv[3] || !seed) {
-      console.error("❌ Usage: bun verifyWinner.ts <data-file-path> <number-of-winners> <vrf-seed>");
+      console.error(
+        "❌ Usage: bun verifyWinner.ts <data-file-path> <number-of-winners> <vrf-seed>"
+      );
       process.exit(1);
     }
 
-    validateCliArgs({ 
-      dataFilePath, 
-      numberOfWinners: selectedCount, 
-      seed 
+    validateCliArgs({
+      dataFilePath,
+      numberOfWinners: selectedCount,
+      seed,
     });
 
     if (!fs.existsSync(dataFilePath)) {
@@ -31,13 +33,23 @@ const main = async (): Promise<void> => {
 
     validateHolders(topHolders);
 
-    const { randomness } = await verifyRandomness(seed);
+    if (!process.env.ANCHOR_PROVIDER_URL) {
+      throw new Error("ANCHOR_PROVIDER_URL is not set");
+    }
+
+    const { randomness } = await verifyRandomness(
+      seed,
+      process.env.ANCHOR_PROVIDER_URL
+    );
     const winners = selectFromRandomness(topHolders, randomness, selectedCount);
 
     console.log("\n✅ Verified winners from the seed:");
     console.log(winners);
   } catch (error) {
-    console.error("\n❌ Error:", error instanceof Error ? error.message : error);
+    console.error(
+      "\n❌ Error:",
+      error instanceof Error ? error.message : error
+    );
     process.exit(1);
   }
 };
